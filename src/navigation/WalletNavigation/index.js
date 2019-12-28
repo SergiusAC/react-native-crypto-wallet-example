@@ -1,25 +1,59 @@
 import React from 'react';
+
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
+
+import AccountDetailsScreen from '@modules/wallet/screens/AccountDetails';
 import AccountListScreen from '@modules/wallet/screens/AccountList';
+
 import TransferScreen from '@modules/wallet/screens/Transfer';
+
 import HistoryScreen from '@modules/wallet/screens/History';
+
 import { Icon, Text } from 'native-base';
 
-const WalletNavigation = createBottomTabNavigator(
+
+const AccountsNavigation = createStackNavigator(
   {
-    AccountList: { screen: AccountListScreen },
-    Transfer: { screen: TransferScreen },
-    History: { screen: HistoryScreen },
+    AccountList: AccountListScreen,
+    AccountDetails: AccountDetailsScreen
   },
   {
     initialRouteName: 'AccountList',
+    headerMode: 'none'
+  }
+);
+
+const WalletNavigation = createBottomTabNavigator(
+  {
+    Accounts: { 
+      screen: AccountsNavigation,
+      navigationOptions: {
+        title: 'Счета'
+      } 
+    },
+    Transfer: { 
+      screen: TransferScreen,
+      navigationOptions: {
+        title: 'Переводы'
+      } 
+    },
+    History: { 
+      screen: HistoryScreen,
+      navigationOptions: {
+        title: 'История'
+      } 
+    },
+  },
+  {
+    initialRouteName: 'Accounts',
     defaultNavigationOptions: (options) => {
       return {
         tabBarIcon: ({focused}) => {
           const { routeName } = options.navigation.state;
           let iconName = 'wallet';
 
-          if (routeName === 'AccountList') {
+          if (routeName === 'Accounts') {
             iconName = 'wallet';
           } else if (routeName === 'Transfer') {
             iconName = 'send';
@@ -28,25 +62,11 @@ const WalletNavigation = createBottomTabNavigator(
           }
 
           return <Icon name={iconName} style={{color: (focused ? '#3F51B5' : 'black')}} />
-        },
-        tabBarLabel: () => {
-          const { routeName } = options.navigation.state;
-          let text = '';
-          
-          if (routeName === 'AccountList') {
-            text = 'accounts';
-          } else if (routeName === 'History') {
-            text = 'history';
-          } else if (routeName === 'Transfer') {
-            text = 'transfers';
-          }
-
-          return <Text style={{textAlign: 'center'}}>{text}</Text>
         }
       }
     },
     tabBarOptions: {
-      activeTintColor: 'purple',
+      activeTintColor: '#3F51B5',
       inactiveTintColor: 'gray',
     },
   }

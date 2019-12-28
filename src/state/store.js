@@ -28,7 +28,7 @@ const persistConfig = {
   key: 'root',
   storage: CustomSecureStorage,
   whitelist: [
-    'auth',
+    'auth', 'wallet'
   ],
   blacklist: [
   ],

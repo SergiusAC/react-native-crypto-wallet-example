@@ -8,6 +8,7 @@ import {
 } from 'native-base';
 import { setFullName, setPassword, logout } from '../../../../state/auth/actions';
 import { verifyPassword, encryptPassword } from '@state/auth/operations';
+import { errorToast, successToast } from '@utils';
 
 const Settings = (props) => {
 
@@ -27,54 +28,29 @@ const Settings = (props) => {
   const changeFullName = () => {
     if (newFullName.trim().length > 3) {
       props.setFullName(newFullName.trim());
-      Toast.show({
-        text: 'Имя успешно изменено',
-        duration: 5000,
-        type: 'success'
-      });
+      successToast('Имя успешно изменено');
     } else {
-      Toast.show({
-        text: 'Имя должо быть не меньше трёх символов',
-        buttonText: 'OK',
-        duration: 5000,
-        type: 'warning'
-      });
+      errorToast('Имя должо быть не меньше трёх символов')
     }
     setFullNameVisible(false);
   };
 
   const changePassword = () => {
     if (!verifyPassword(oldPassword)) {
-      Toast.show({
-        text: 'Неправильный старый пароль',
-        duration: 5000,
-        type: 'danger'
-      });
+      errorToast('Неправильный старый пароль');
     } 
     else if (newPassword.length < 8) {
-      Toast.show({
-        text: 'Новый пароль должен быть не меньше 8 символов',
-        duration: 5000,
-        type: 'danger'
-      });
+      errorToast('Новый пароль должен быть не меньше 8 символов')
     } 
     else if (newPassword !== newPasswordConfirm) {
-      Toast.show({
-        text: 'Вы неправильно повторили пароль',
-        duration: 5000,
-        type: 'danger'
-      });
+      errorToast('Вы неправильно повторили пароль');
     } 
     else {
       props.setPassword(encryptPassword(newPassword));
       setOldPassword('');
       setNewPassword('');
       setnewPasswordConfirm('');
-      Toast.show({
-        text: 'Пароль успешно изменен',
-        duration: 5000,
-        type: 'success'
-      });
+      successToast('Пароль успешно изменен');
     }
     setPasswordVisible(false);
   };
