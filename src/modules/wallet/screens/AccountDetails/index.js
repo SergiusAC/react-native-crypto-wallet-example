@@ -3,6 +3,7 @@ import {
   Container, View, Text, Content
 } from 'native-base';
 import { getBalanceInEther } from '../../../../services/ether';
+import SimpleHeaderWithArrowBack from '@modules/shared/components/SimpleHeaderWithArrowBack';
 
 const AccountDetails = (props) => {
   const account = props.navigation.getParam('account', null);
@@ -11,12 +12,9 @@ const AccountDetails = (props) => {
 
   getBalanceInEther(account.address)
     .then((balance) => {
-      console.log('OK');
-      console.log(balance);
       setBalance(balance);
     })
     .catch(err => {
-      console.log('error');
       console.log(err);
     });
   
@@ -24,6 +22,7 @@ const AccountDetails = (props) => {
 
   return (
     <Container>
+      <SimpleHeaderWithArrowBack onArrowBackPress={props.navigation.goBack} title="Детали счёта" />
       <Content>
         <View>
           <Text>Имя счета: {account.name}</Text>
